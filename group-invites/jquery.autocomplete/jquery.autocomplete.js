@@ -50,7 +50,7 @@
     this.setOptions(options);
   }
   
-  $.fn.autocomplete = function(options) {
+  $.fn.autocompleteMembers = function(options) {
     return new Autocomplete(this.get(0)||$('<input />'), options);
   };
 
@@ -240,6 +240,7 @@
       } else if (!this.isBadQuery(q)) {
         me = this;
         me.options.params.query = q;
+	this.el.addClass( 'autocomplete-loading' );
         $.post(this.serviceUrl, me.options.params, function(txt) { me.processResponse(txt); }, 'text');
       }
     },
@@ -285,6 +286,9 @@
 
     processResponse: function(text) {
       var response;
+
+      this.el.removeClass( 'autocomplete-loading' );
+
       try {
         response = eval('(' + text + ')');
       } catch (err) { return; }
